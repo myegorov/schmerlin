@@ -12,8 +12,8 @@ endif
 runtime! syntax/sml.vim syntax/sml/*.vim
 set filetype=sml
 
-syntax keyword TransmlerKeyword import export from
-highlight link TransmlerKeyword Keyword
+syntax keyword TransmlerInclude import export from
+highlight link TransmlerInclude Include
 
 syntax keyword TransmlerDelimiter %%
 highlight link TransmlerDelimiter Delimiter
