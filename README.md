@@ -18,14 +18,19 @@
 
 # Dependencies
 
-Vim compiled with Python support (`:echo has('python3') == 1`).
+Vim 7+ compiled with Python 3 support (`:echo has('python3') == 1`).
 
 # Install
 
 Install this plugin using a plugin manager, or by extracting the
 files in your `~/.vim` directory.
 
-Using [Vundle](https://github.com/VundleVim/Vundle.vim):
+If using [Vundle](https://github.com/VundleVim/Vundle.vim), add to your `~/.vimrc`:
 ```vim
 Plugin 'myegorov/schmerlin'
 ```
+and then run `:PluginInstall`
+
+# Features
+
+- autocomplete identifiers with <Tab>

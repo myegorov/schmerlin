@@ -34,10 +34,24 @@ endfunction
 
 function! schmerlin#Complete(findstart,base)
   if a:findstart
-    " call #1: return col number
-    return 0
+    " call #1: return col number @ start of prefix
+    let line = getline('.')
+    let start = col('.') - 1
+    while start > 0
+      " [0-9A-Za-z_] or prime or dot
+      " TODO: currently not handling symbolic identifiers
+      if line[start - 1] =~ '\(\w\|''\|\.\)'
+        let start -= 1
+      else
+        break
+      endif
+    endwhile
+    return start
   else
     " call #2: return list of candidates
-    return ["something", "or", "other"]
+    " let s:complete_res = ['dummy']
+    Py vim.command("let l:complete_res = %s" %
+    \   schmerlin.complete_prefix(vim.eval("a:base")))
+    return s:complete_res
   endif
 endfunction
