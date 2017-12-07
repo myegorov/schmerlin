@@ -18,6 +18,9 @@ highlight link TransmlerInclude Include
 syntax keyword TransmlerDelimiter %%
 highlight link TransmlerDelimiter Delimiter
 
+syntax keyword TransmlerTodo TODO FIXME contained
+highlight link TransmlerTodo Todo
+
 " MLton basis
 syntax match MLtonBasis /\v(^\s*import\s+)@<=\$\(SML_LIB\)\S*/
 highlight link MLtonBasis String
