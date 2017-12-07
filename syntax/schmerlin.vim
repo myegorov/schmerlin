@@ -10,9 +10,10 @@ endif
 
 " fall back on standard syntax highlighting for SML
 runtime! syntax/sml.vim syntax/sml/*.vim
+set filetype=sml
 
 syntax keyword TransmlerKeyword import export from
-highlight link TransmlerKeyword PreProc
+highlight link TransmlerKeyword Keyword
 
 syntax keyword TransmlerDelimiter %%
 highlight link TransmlerDelimiter Delimiter
