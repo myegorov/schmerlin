@@ -33,4 +33,4 @@ and then run `:PluginInstall`
 
 # Features
 
-- autocomplete identifiers with <Tab>
+- autocomplete identifiers with &lt;Tab&gt;

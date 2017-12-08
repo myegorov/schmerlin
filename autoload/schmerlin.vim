@@ -5,6 +5,7 @@ if has('python3')
   Py import sys, vim
   Py if not vim.eval("s:curdir") in sys.path:
   \   sys.path.append(vim.eval("s:curdir"))
+  Py import schmerlin
 else
   echo "Error: vim must be compiled with +python3"
   finish
@@ -21,7 +22,6 @@ function! schmerlin#CleverTab()
       return "\<Tab>"
   else
     " omni completion takes priority
-    " TODO: use dictionary completion for reserved keywords
     " TODO: check if completion window open and cycle through suggestions
     if &omnifunc != ''
       return "\<C-X>\<C-O>"
@@ -37,11 +37,16 @@ function! schmerlin#Complete(findstart,base)
     " call #1: return col number @ start of prefix
     let line = getline('.')
     let start = col('.') - 1
+    " let symbols = '[!%\&\$#+-/:<=>?@\\\~`\^|\*]'
+    " let is_symbolic = (line[start] =~ symbols)
     while start > 0
       " [0-9A-Za-z_] or prime or dot
-      " TODO: currently not handling symbolic identifiers
+      "" also check if symbolic identifier
+      " if !is_symbolic && line[start - 1] =~ '\(\w\|''\|\.\)'
       if line[start - 1] =~ '\(\w\|''\|\.\)'
         let start -= 1
+      " elseif is_symbolic && line[start - 1] =~ symbols
+      "   let start -= 1
       else
         break
       endif
@@ -49,9 +54,9 @@ function! schmerlin#Complete(findstart,base)
     return start
   else
     " call #2: return list of candidates
-    " let s:complete_res = ['dummy']
+    let l:complete_res = []
     Py vim.command("let l:complete_res = %s" %
     \   schmerlin.complete_prefix(vim.eval("a:base")))
-    return s:complete_res
+    return l:complete_res
   endif
 endfunction
