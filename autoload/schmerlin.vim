@@ -22,7 +22,7 @@ function! schmerlin#CleverTab()
       return "\<Tab>"
   else
     " omni completion takes priority
-    " TODO: check if completion window open and cycle through suggestions
+    " TODO: check if completion window is open -> cycle through suggestions
     if &omnifunc != ''
       return "\<C-X>\<C-O>"
     else
@@ -37,16 +37,19 @@ function! schmerlin#Complete(findstart,base)
     " call #1: return col number @ start of prefix
     let line = getline('.')
     let start = col('.') - 1
-    " let symbols = '[!%\&\$#+-/:<=>?@\\\~`\^|\*]'
-    " let is_symbolic = (line[start] =~ symbols)
+    let symbols = '[!%&$#+-/:<=>?@\~`^|*]'
+    let is_symbolic = (line[start - 1] =~ symbols)
+    echom is_symbolic
+    echom line[start]
+    echom start
     while start > 0
-      " [0-9A-Za-z_] or prime or dot
-      "" also check if symbolic identifier
-      " if !is_symbolic && line[start - 1] =~ '\(\w\|''\|\.\)'
-      if line[start - 1] =~ '\(\w\|''\|\.\)'
+      " Valid identifiers:
+      "   [0-9A-Za-z_] or prime or dot
+      "   also check if symbolic identifier
+      if !is_symbolic && (line[start - 1] =~ '\(\w\|''\|\.\)')
         let start -= 1
-      " elseif is_symbolic && line[start - 1] =~ symbols
-      "   let start -= 1
+      elseif is_symbolic && (line[start - 1] =~ symbols)
+        let start -= 1
       else
         break
       endif
@@ -54,9 +57,10 @@ function! schmerlin#Complete(findstart,base)
     return start
   else
     " call #2: return list of candidates
+    " workaround to print \\ as \
     let l:complete_res = []
     Py vim.command("let l:complete_res = %s" %
-    \   schmerlin.complete_prefix(vim.eval("a:base")))
+    \   str(schmerlin.complete_prefix(vim.eval("a:base"))).replace("\\\\", "\\"))
     return l:complete_res
   endif
 endfunction

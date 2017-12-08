@@ -18,7 +18,9 @@
 
 # Dependencies
 
-Vim 7+ compiled with Python 3 support (`:echo has('python3') == 1`).
+- Vim 7+ compiled with Python 3 support (`:echo has('python3') == 1`).
+- [MLton](https://github.com/MLton/mlton)
+- Transmler (pip install? git submodule?)
 
 # Install
 

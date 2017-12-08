@@ -8,7 +8,7 @@ KW_FILE = 'data/keywords'
 def complete_prefix(base):
     with open(os.path.join(CURDIR, KW_FILE), 'r') as infile:
         keywords = infile.readlines()
-        res = [{'word': kw.strip(), 'abbr': kw.strip(), 'icase': 1} \
+        res = [{"word": kw.strip(), "abbr": kw.strip(), "icase": 1} \
                     for kw in keywords \
                     if kw[:len(base)].lower() == base.lower()]
-        return repr(res)
+        return res
