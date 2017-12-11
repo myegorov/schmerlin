@@ -16,10 +16,7 @@ endif
 function! schmerlin#Register()
   setlocal omnifunc=schmerlin#Complete
   inoremap <buffer> <Tab> <C-R>=schmerlin#CleverTab()<CR>
-
-  if !exists('b:trie')
-    Py vim.command("let b:trie = %s" %schmerlin.load_trie())
-  endif
+  Py schmerlin.load_trie()
 endfunction
 
 function! schmerlin#CleverTab()
@@ -66,7 +63,7 @@ function! schmerlin#Complete(findstart,base)
     " workaround to print \\ as \
     let l:complete_res = []
     Py vim.command("let l:complete_res = %s" %
-    \   str(schmerlin.complete_prefix(vim.eval("a:base"), vim.eval("b:trie"))).replace("\\\\", "\\"))
+    \   str(schmerlin.complete_prefix(vim.eval("a:base"))).replace("\\\\", "\\"))
     return l:complete_res
   endif
 endfunction

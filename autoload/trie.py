@@ -42,12 +42,6 @@ class Trie:
             char = char.follow[letter]
         char.is_sentinel = True
 
-    # TODO: implement https://pdfs.semanticscholar.org/ed71/b0b2bb44289e41807a740d4cfbcfdd7f6372.pdf
-    def dump(self):
-        pass
-    def load(self):
-        pass
-
 if __name__ == "__main__":
     t = Trie()
     dictionary = ["A","to", "tea", "ted", "ten", "I", "in", "inn"]
