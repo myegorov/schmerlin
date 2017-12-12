@@ -13,14 +13,29 @@ endif
 
 " main point of entry
 function! schmerlin#Register()
+  set previewheight=50
   setlocal omnifunc=schmerlin#Complete
   setlocal completeopt=longest,menuone,preview
+
+  " remap <Tab> for invoking autocomplete & cycling
   inoremap <buffer> <Tab> <C-R>=schmerlin#CleverTab()<CR>
-  Py schmerlin.load_trie()
-  " autoclose preview window once autocompletion selected
-  autocmd CompleteDone * pclose
+
   " use <ENTER> to select
   inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+  " " autoclose preview window once autocompleted
+  " autocmd CompleteDone * pclose
+
+  " remove line numbers in preview window
+  autocmd WinEnter * call schmerlin#Preview()
+
+  Py schmerlin.load_trie(vim.eval("expand('%:p')"))
+endfunction
+
+function! schmerlin#Preview()
+  if &previewwindow
+    setlocal nonumber
+  endif
 endfunction
 
 function! schmerlin#CleverTab()
@@ -29,7 +44,6 @@ function! schmerlin#CleverTab()
       return "\<Tab>"
   else
     " omni completion takes priority
-    " TODO: check if completion window is open -> cycle through suggestions
     if &omnifunc != ''
       " cycle through menu
       if pumvisible()
