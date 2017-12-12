@@ -1,5 +1,4 @@
-" check dependencies
-" TODO: check for MLton on path and pip install transmler
+" TODO: check for dependencies -- MLton on path and pip install transmler
 if has('python3')
   command! -nargs=1 Py python3 <args>
   let s:curdir=expand("<sfile>:p:h")
@@ -15,8 +14,13 @@ endif
 " main point of entry
 function! schmerlin#Register()
   setlocal omnifunc=schmerlin#Complete
+  setlocal completeopt=longest,menuone,preview
   inoremap <buffer> <Tab> <C-R>=schmerlin#CleverTab()<CR>
   Py schmerlin.load_trie()
+  " autoclose preview window once autocompletion selected
+  autocmd CompleteDone * pclose
+  " use <ENTER> to select
+  inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 endfunction
 
 function! schmerlin#CleverTab()
@@ -27,7 +31,12 @@ function! schmerlin#CleverTab()
     " omni completion takes priority
     " TODO: check if completion window is open -> cycle through suggestions
     if &omnifunc != ''
-      return "\<C-X>\<C-O>"
+      " cycle through menu
+      if pumvisible()
+        return "\<C-N>"
+      else
+        return "\<C-X>\<C-O>"
+      endif
     else
       " known-word completion
       return "\<C-N>"

@@ -41,8 +41,9 @@ def complete_prefix(base):
     """ Autocomplete from prefix and trie.
     """
     tr = __cache.buffer
-    res = [{"word": word, "abbr": word, "kind": "⚷"} \
-                for word in tr.autocomplete(base)]
+    # "menu": '<extra text after "word">', "info": "<appears in preview window>"
+    res = [{"word": word, "kind": "⚷", "menu": "<reserved keyword>"} \
+        for word in tr.autocomplete(base)]
     return res
 
 if __name__ == "__main__":
