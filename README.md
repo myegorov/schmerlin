@@ -1,25 +1,38 @@
 # Use case (modeled after OCaml's Merlin)
 
-1. autocomplete tooltip (targeting Vim's `omnifunc`)
+1. [IN PROGRESS] autocomplete tooltip (targeting Vim's `omnifunc`)
   - at a minimum, use default MLBasis
   - if editing an *b file, `transmile --imports` to infer imported scope
     with `-show-basis-flat`
-  - in the future, allow for directives at arbitrary point in buffer
+  - [TBD] in the future, allow for directives at arbitrary point in buffer
       to dump basis at that point
-2. Jump between def and use with `-show-def-use`
-3. Get a list of all uses for name under cursor (CtrlP like interface):
+2. [TBD] Jump between def and use with `-show-def-use`
+3. [TBD] Get a list of all uses for name under cursor (CtrlP like interface):
   - jump to any use in list
   - select/rename all occurrences in list etc.
-4. query type of name under cursor to display in vim commandline
-5. highlight unused definitions in current buffer
-6. report type errors
-7. async autoreload def-use and basis for current buffer & run typechecker in the background
-8. alternate between .sig and .sml files (as in a.vim)
+4. [TBD] query type of name under cursor to display in vim commandline
+5. [TBD] highlight unused definitions in current buffer
+6. [TBD] report type errors
+7. [TBD] async autoreload def-use and basis for current buffer & run typechecker in the background
+8. [TBD] alternate between .sig and .sml files (as in a.vim)
 
+# Dependencies
 
-# Roadmap
+- Vim 7+ compiled with Python 3 support (`:echo has('python3') == 1`).
+- [MLton](https://github.com/MLton/mlton)
+- Transmler (pip install? git submodule?)
 
-- skeleton for a Vim plugin (for now only for autocompletion);
-- parser for -show-basis-flat, dump to prefix trie representation
-  (see `:help complete-items` for `omnifunc` requirements)
-- add other features
+# Install
+
+Install this plugin using a plugin manager, or by extracting the
+files in your `~/.vim` directory.
+
+If using [Vundle](https://github.com/VundleVim/Vundle.vim), add to your `~/.vimrc`:
+```vim
+Plugin 'myegorov/schmerlin'
+```
+and then run `:PluginInstall`
+
+# Features
+
+- autocomplete identifiers with &lt;Tab&gt;
