@@ -13,7 +13,6 @@ endif
 
 " main point of entry
 function! schmerlin#Register()
-  set previewheight=50
   setlocal omnifunc=schmerlin#Complete
   setlocal completeopt=longest,menuone,preview
 
@@ -29,7 +28,8 @@ function! schmerlin#Register()
   " remove line numbers in preview window
   autocmd WinEnter * call schmerlin#Preview()
 
-  Py schmerlin.load_trie(vim.eval("expand('%:p')"))
+  " TODO: run async, signal when done
+  Py schmerlin.get_trie(vim.eval("expand('%:p')"))
 endfunction
 
 function! schmerlin#Preview()
@@ -86,7 +86,7 @@ function! schmerlin#Complete(findstart,base)
     " workaround to print \\ as \
     let l:complete_res = []
     Py vim.command("let l:complete_res = %s" %
-    \   str(schmerlin.complete_prefix(vim.eval("a:base"))).replace("\\\\", "\\"))
+    \   str(schmerlin.complete_prefix(vim.eval("a:base"), vim.eval("expand('%:p')"))).replace("\\\\", "\\"))
     return l:complete_res
   endif
 endfunction
