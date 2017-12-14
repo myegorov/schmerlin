@@ -126,7 +126,8 @@ and then run `:PluginInstall`
   <kbd>Ctrl</kbd>+<kbd>n</kbd>,
   and backward with <kbd>Ctrl</kbd>+<kbd>p</kbd>
 - toggle between main and preview windows as usual in the normal mode 
-  with <kbd>Ctrl</kbd>+<kbd>w</kbd> followed by <kbd>w</kbd>
+  with <kbd>Ctrl</kbd>+<kbd>w</kbd> followed by <kbd>w</kbd>; close
+  the preview window with `:pc`
 
 [...to be continued]
 
