@@ -15,12 +15,27 @@ endif
 function! schmerlin#Register()
   setlocal omnifunc=schmerlin#Complete
   setlocal completeopt=longest,menuone,preview
+
+  " remap <Tab> for invoking autocomplete & cycling
   inoremap <buffer> <Tab> <C-R>=schmerlin#CleverTab()<CR>
-  Py schmerlin.load_trie()
-  " autoclose preview window once autocompletion selected
-  autocmd CompleteDone * pclose
+
   " use <ENTER> to select
   inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+  " " autoclose preview window once autocompleted
+  " autocmd CompleteDone * pclose
+
+  " remove line numbers in preview window
+  autocmd WinEnter * call schmerlin#Preview()
+
+  " TODO: run async, signal when done
+  Py schmerlin.get_trie(vim.eval("expand('%:p')"))
+endfunction
+
+function! schmerlin#Preview()
+  if &previewwindow
+    setlocal nonumber
+  endif
 endfunction
 
 function! schmerlin#CleverTab()
@@ -29,7 +44,6 @@ function! schmerlin#CleverTab()
       return "\<Tab>"
   else
     " omni completion takes priority
-    " TODO: check if completion window is open -> cycle through suggestions
     if &omnifunc != ''
       " cycle through menu
       if pumvisible()
@@ -72,7 +86,7 @@ function! schmerlin#Complete(findstart,base)
     " workaround to print \\ as \
     let l:complete_res = []
     Py vim.command("let l:complete_res = %s" %
-    \   str(schmerlin.complete_prefix(vim.eval("a:base"))).replace("\\\\", "\\"))
+    \   str(schmerlin.complete_prefix(vim.eval("a:base"), vim.eval("expand('%:p')"))).replace("\\\\", "\\"))
     return l:complete_res
   endif
 endfunction
