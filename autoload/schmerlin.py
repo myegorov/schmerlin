@@ -90,4 +90,4 @@ def dump_basis(fpath):
 
 if __name__ == "__main__":
     fpath = '/home/max/projects/schmerlin/test/example.smlb'
-    print(complete_prefix('a', fpath))
+    print(complete_prefix('Array.', fpath))

@@ -63,8 +63,10 @@ function! schmerlin#Complete(findstart,base)
     " call #1: return col number @ start of prefix
     let l:line = getline('.')
     let l:start = col('.') - 1
-    let s:symbols = '[!%&$#+-/:<=>?@\~`^|*]'
-    let l:is_symbolic = (l:line[l:start - 1] =~ s:symbols)
+    let s:symbols = '[!%&$#:<=>?@\~`^\|*\+\-\/\\]'
+    " FIXME: bug, e.g. Compare.>=.whatever is a valid identifier
+    "         do this regex thingy in Python instead
+    let l:is_symbolic = ((l:line[l:start - 1] =~ s:symbols))
     while l:start > 0
       " Valid identifiers:
       "   [0-9A-Za-z_] or prime or dot
@@ -77,16 +79,12 @@ function! schmerlin#Complete(findstart,base)
         break
       endif
     endwhile
-    " TODO: return -1 if start unchanged (meaning no completion possible)
     return l:start
   else
     " call #2: return list of candidates
-    " TODO: construct & cache the prefix trie on first call (for now assuming will read
-    "       from file on first call)
-    " workaround to print \\ as \
     let l:complete_res = []
     Py vim.command("let l:complete_res = %s" %
-    \   str(schmerlin.complete_prefix(vim.eval("a:base"), vim.eval("expand('%:p')"))).replace("\\\\", "\\"))
+    \   schmerlin.complete_prefix(vim.eval("a:base"), vim.eval("expand('%:p')")))
     return l:complete_res
   endif
 endfunction

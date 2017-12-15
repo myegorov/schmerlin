@@ -17,8 +17,10 @@
 6. [TBD] commands to reload def-use and basis for current buffer (see below).
 7. [TBD] alternate between `.sig` and `.sml` files (as in the `a.vim` plugin)
 8. [TBD] update `transmler` for the requirements of `schmerlin`
-9. [TBD] provide interface to custom plugin commands & option to disable 
+9. [TBD] provide interface to custom plugin commands & option to disable
     default keybindings
+10. [TBD] add support for plain .sml files (look for `<basename>.mlb` or
+    `sources.mlb` or prompt user for path to mlb).
 
 
 # Target workflow
