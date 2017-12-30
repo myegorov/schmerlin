@@ -1,26 +1,47 @@
+# In progress
+
+1. redo `omnifunc` in Python and verify fixed bug of identifier delimiting (`abc.%$^.a.`)
+2. sort autocompletions s.t. `A` and `a` both precede `B` etc.
+3. update parser & autocomplete functionality for latest MLton master
+4. add async `:mkbasis <optional-path-to-mlb>` command (basis path defaults to `./.ide/<active-buffer-name>.basis`):
+    + assume user inserts `(*#showBasis "<outfile>"*)` directive as needed
+    + if SMLB file, run `transmler` to create `mlb`
+    + elif SML file:
+      * given arg to `:mkbasis` command, use that `mlb`
+      * else search for `<basename>.mlb` under current dir -> if not found, search for `sources.mlb` under current dir
+      * else prompt user for path to `mlb`
+    + run `mlton -show-basis -show-basis-flat true` etc. to output `.basis`
+    + create, cache & write to disk the prefix trie for autocompletion (or parse `.basis` each time?)
+    + signal in vim status line when done
+
 # Features
 
-1. [IN PROGRESS] autocomplete tooltip (targeting Vim's `omnifunc`)
-  - at a minimum, uses default MLBasis + SML reserved words
-  - if editing an `*b` file, `transmile --imports` to infer imported scope
-    with `-show-basis-flat`
-  - [TBD] in the future, allow for directives at arbitrary point in buffer
-      to dump basis at that point
-2. [TBD] Jump between def and use with `-show-def-use` (create a single 
+1. [TBD] commands to reload def-use and basis for current buffer (`:mkbasis`, `:mkdefuse`).
+2. [IN PROGRESS] autocomplete tooltip (targeting Vim's `omnifunc`)
+  - allow for directives at arbitrary point in buffer
+      to dump basis at that point (relying on `(*#showBasis "<file>"*)`)
+  - in the absence of the above directive, create basis from imports:
+    at a minimum, uses default MLBasis + SML reserved words
+  - if editing an `.*b` file, `transmile --imports` to infer imported scope
+  - if editing plain `.sml` files, look for 
+    (look for `<basename>.mlb` or `sources.mlb` or prompt user for path to mlb).
+
+3. [TBD] Jump to def for autocompleted identifier (relying on `-show-basis-def true -show-basis-compact true`)
+    (use a single def-use file per project: import all
+    `smlb`, `sigb`, `funb` files below project root)
+4. [TBD] Jump between def and use with `-show-def-use` (create a single 
     def-use file per project by importing all `*.smlb`, `*.sigb`, `*.funb` 
     files below project level dir)
-3. [TBD] Get a list of all uses for name under cursor (CtrlP like interface):
+5. [TBD] Get a list of all uses for name under cursor (CtrlP like interface):
   - jump to any use in list
   - select/rename all occurrences in list, highlight them in buffer etc.
-4. [TBD] query type of name under cursor to display in vim commandline
-5. [TBD] highlight unused definitions in current buffer
-6. [TBD] commands to reload def-use and basis for current buffer (see below).
-7. [TBD] alternate between `.sig` and `.sml` files (as in the `a.vim` plugin)
-8. [TBD] update `transmler` for the requirements of `schmerlin`
-9. [TBD] provide interface to custom plugin commands & option to disable
+6. [TBD] query type of name under cursor to display in vim commandline
+7. [TBD] highlight unused definitions in current buffer
+8. [TBD] alternate between `.sig` and `.sml` files (as in the `a.vim` plugin)
+9. [TBD] update `transmler` for the requirements of `schmerlin`
+10. [TBD] provide interface to custom plugin commands & option to disable
     default keybindings
-10. [TBD] add support for plain .sml files (look for `<basename>.mlb` or
-    `sources.mlb` or prompt user for path to mlb).
+11. [TBD] add support for plain .sml files
 
 
 # Target workflow
@@ -103,19 +124,24 @@ The steps below refer to a sample project tree:
 
 # Dependencies
 
-- Vim 8+ compiled with Python 3 support (`:echo has('python3') == 1`).
-    (or Vim 7+ if not relying on async?)
+- Vim 7.4+ compiled with Python 3 support (`:echo has('python3') == 1`).
 - [MLton](https://github.com/MLton/mlton)
 - [transmler](https://github.com/myegorov/transmler)
+- [asyncrun.vim](https://github.com/skywind3000/asyncrun.vim)
 
 
 # Install
 
-Install this plugin using a plugin manager, or by extracting the
+```shell
+pip install transmler
+```
+
+Install `asyncrun.vim` and this plugin using a plugin manager, or by extracting the
 files in your `~/.vim` directory.
 
 For example, if using [Vundle](https://github.com/VundleVim/Vundle.vim), add to your `~/.vimrc`:
 ```vim
+Plugin 'skywind3000/asyncrun.vim'
 Plugin 'myegorov/schmerlin'
 ```
 and then run `:PluginInstall`

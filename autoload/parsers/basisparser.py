@@ -3,14 +3,14 @@ from .parser import Parser
 
 class BasisParser(Parser):
     SYM = {
-        'type': u"\u03C4", # tau
-        'datatype': u"\u03B4", # delta
-        'con': u"\u039A", # Kappa
-        'val': u"\u03B1", # alpha
+        'type': u"\u1d6d5", # tau
+        'datatype': u"\u1d6c5", # delta
+        'con': u"\u1D49E", # Kappa
+        'val': u"\u1D499", # x
         'exception': u"\u26A1", # high voltage char
-        'signature': u"\u03C2", # sigma
-        'structure': u"\u2302", # structure
-        'functor': u"\u03A6" # Phi
+        'signature': u"\u1d4ae", # S
+        'structure': u"\u1d4c8", # s
+        'functor': u"\u2131" # F
     }
 
 

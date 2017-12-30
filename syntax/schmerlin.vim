@@ -1,9 +1,5 @@
 " Vim syntax file
 " Language:	SML extensions
-" Maintainer:	Maksim Yegorov <findmaksim@gmail.com>
-" URL: https://github.com/myegorov/schmerlin
-" Last Change: 2017-12-06 Wed 07:14 PM
-
 if exists("b:current_syntax")
   finish
 endif
